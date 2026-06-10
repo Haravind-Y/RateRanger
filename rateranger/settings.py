@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 'watchlist',
 'alerts',
 'predictions',
+'scraper'
 ]
 
 MIDDLEWARE = [
