@@ -1,4 +1,5 @@
 from .models import Product, PriceHistory
+from alerts.services import check_alerts
 
 
 def update_product_price(product_id, new_price):
@@ -16,5 +17,6 @@ def update_product_price(product_id, new_price):
             product=product,
             price=new_price
         )
+        check_alerts(product)
 
     return product

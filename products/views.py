@@ -3,6 +3,28 @@ from django.shortcuts import get_object_or_404
 from .models import Product
 from decimal import Decimal
 from .services import update_product_price
+from scraper.service import get_latest_price
+
+def refresh_product_price(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    latest_price = get_latest_price(product)
+
+    if latest_price is None:
+        return JsonResponse({
+            "error": "Unsupported source"
+        }, status=400)
+
+    update_product_price(product.id, latest_price)
+
+    product.refresh_from_db()
+
+    return JsonResponse({
+        "message": "Price refreshed",
+        "product": product.name,
+        "current_price": str(product.current_price)
+    })
+
 
 
 def search_products(request):
